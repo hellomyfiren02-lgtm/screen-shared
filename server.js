@@ -12,8 +12,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(__dirname));
 
-app.get("/api/webrtc-config", (req, res) => {
-  const iceServers = [{ urls: ["stun:stun.l.google.com:19302"] }];
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
   if (process.env.TURN_URL && process.env.TURN_USERNAME && process.env.TURN_CREDENTIAL) {
     iceServers.push({
       urls: process.env.TURN_URL.split(",").map(s => s.trim()),
