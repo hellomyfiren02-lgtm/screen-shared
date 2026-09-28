@@ -15,13 +15,21 @@ app.use(express.static(__dirname));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
-  if (process.env.TURN_URL && process.env.TURN_USERNAME && process.env.TURN_CREDENTIAL) {
+ app.get("/api/webrtc-config", (req, res) => {
+  const iceServers = [{ urls: ["stun:stun.l.google.com:19302"] }];
+
+  if (
+    process.env.TURN_URL &&
+    process.env.TURN_USERNAME &&
+    process.env.TURN_CREDENTIAL
+  ) {
     iceServers.push({
       urls: process.env.TURN_URL.split(",").map(s => s.trim()),
       username: process.env.TURN_USERNAME,
       credential: process.env.TURN_CREDENTIAL
     });
   }
+
   res.json({ iceServers });
 });
 
