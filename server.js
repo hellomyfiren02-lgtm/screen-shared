@@ -10,7 +10,7 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(__dirname));
 
 app.get("/api/webrtc-config", (req, res) => {
   const iceServers = [{ urls: ["stun:stun.l.google.com:19302"] }];
