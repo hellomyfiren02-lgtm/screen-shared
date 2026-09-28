@@ -54,7 +54,7 @@ function viewerList(room) {
 }
 
 app.get("/sala/:roomId", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 io.on("connection", socket => {
