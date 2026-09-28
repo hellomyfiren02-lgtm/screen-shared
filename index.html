@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Screen Share V2</title>
+<link rel="stylesheet" href="/style.css">
+<script>window.WEBRTC_CONFIG=window.WEBRTC_CONFIG||null;</script>
+<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">📺 <b>Screen Share</b> <span>V2</span></div>
+    <div id="liveBadge" class="live-badge hidden">🔴 AO VIVO</div>
+    <button id="themeBtn" class="icon-btn" title="Dark mode">🌙</button>
+  </header>
+
+  <main id="home" class="page">
+    <section class="hero card">
+      <h1>Transmita sua tela em tempo real.</h1>
+      <p>Crie uma sala, compartilhe o link e deixe outras pessoas assistirem.</p>
+      <button id="createBtn" class="primary">🚀 Criar transmissão</button>
+    </section>
+  </main>
+
+  <main id="setup" class="page hidden">
+    <section class="card setup-card">
+      <h2>⚙️ Configurar sala</h2>
+      <label>Nome da transmissão<input id="roomName" maxlength="80" value="Minha transmissão"></label>
+      <label>Seu nome<input id="hostName" maxlength="40" value="Transmissor"></label>
+      <div class="grid2">
+        <label>Link personalizado<input id="customId" placeholder="minha-live"></label>
+        <label>Limite de espectadores<input id="maxViewers" type="number" min="1" max="500" value="100"></label>
+      </div>
+      <label class="check"><input id="privateRoom" type="checkbox"> 🔒 Sala privada com senha</label>
+      <input id="roomPassword" class="hidden" type="password" placeholder="Senha da sala">
+      <label class="check"><input id="temporaryRoom" type="checkbox" checked> ⏱️ Sala temporária</label>
+      <div class="actions"><button id="backHome" class="secondary">Voltar</button><button id="makeRoom" class="primary">Criar sala</button></div>
+      <p id="setupError" class="error"></p>
+    </section>
+  </main>
+
+  <main id="room" class="page hidden">
+    <div class="room-layout">
+      <section class="main-column">
+        <div class="video-card card">
+          <div class="video-head">
+            <div><strong id="roomTitle">Sala</strong><span id="roomStatus">Offline</span></div>
+            <button id="fullscreenBtn" class="secondary">⛶ Tela cheia</button>
+          </div>
+          <div id="videoWrap" class="video-wrap">
+            <video id="remoteVideo" autoplay playsinline controls></video>
+            <div id="waiting" class="waiting">📺 Aguardando transmissão...</div>
+          </div>
+          <div class="controls">
+            <button id="startBtn" class="primary host-only">🔴 Iniciar transmissão</button>
+            <button id="screenBtn" class="secondary host-only">🖥️ Compartilhar tela</button>
+            <button id="micBtn" class="secondary host-only">🎙️ Microfone: OFF</button>
+            <button id="sysAudioBtn" class="secondary host-only">🔊 Áudio sistema: OFF</button>
+            <button id="endBtn" class="danger host-only">🛑 Encerrar</button>
+          </div>
+          <div class="settings-row host-only">
+            <label>Qualidade <select id="quality"><option value="480">480p</option><option value="720" selected>720p</option><option value="1080">1080p</option></select></label>
+            <label>FPS <select id="fps"><option>30</option><option selected>60</option></select></label>
+          </div>
+        </div>
+
+        <div class="stats card">
+          <div><b>👀 <span id="viewerCount">0</span></b><small>Espectadores</small></div>
+          <div><b>📈 <span id="peakCount">0</span></b><small>Pico</small></div>
+          <div><b>⏱️ <span id="duration">00:00:00</span></b><small>Duração</small></div>
+          <div><b>📶 <span id="latency">--</span></b><small>Conexão</small></div>
+        </div>
+
+        <div class="card share">
+          <b>🔗 Link da sala</b>
+          <div class="share-line"><input id="roomLink" readonly><button id="copyBtn" class="primary">Copiar</button></div>
+        </div>
+      </section>
+
+      <aside class="side-column">
+        <section class="card viewers-panel">
+          <h3>👥 Espectadores</h3>
+          <div id="viewerList"></div>
+        </section>
+
+        <section class="card chat-panel">
+          <div class="chat-head"><h3>💬 Chat ao vivo</h3><button id="theaterBtn" class="icon-btn">📺</button></div>
+          <div id="pinned" class="pinned hidden"></div>
+          <div id="messages" class="messages"></div>
+          <div class="chat-input"><input id="chatInput" maxlength="500" placeholder="Digite uma mensagem..."><button id="sendChat" class="primary">Enviar</button></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
